@@ -16,6 +16,7 @@ namespace HashTable
             string[] words = sentence.Split(' ');
             foreach (string word in words)
             {
+               
                 if (hashtable.Exists(word))
                 {
                     hashtable.Add(word, hashtable.get(word) + 1);
@@ -24,10 +25,17 @@ namespace HashTable
                 else {
                     hashtable.Add(word, 1);
                 }
+
             }
             Console.WriteLine("Displaying after add operations");
             hashtable.Display();
             Console.WriteLine("=======================================");
+            Console.WriteLine("After removing avoidable wrod  the hash table is" );
+            hashtable.removeSpecificWord("avoidable");
+            hashtable.Display();
+            Console.WriteLine("=======================================");
+
+
         }
     }
 }

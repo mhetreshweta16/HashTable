@@ -13,20 +13,38 @@ namespace HashTable
     }
     class MyHashCode<K,V>
     {
+        /// <summary>
+        /// using hashtable count frequency
+        /// 
+        /// </summary>
         private readonly int size;
         private readonly LinkedList<KeyValue<K, V>>[] items;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MyHashCode{K, V}"/> class.
+        /// </summary>
+        /// <param name="size">The size.</param>
         public MyHashCode(int size)
         {
             this.size = size;
             this.items = new LinkedList<KeyValue<K, V>>[size];
         
         }
-
+        /// <summary>
+        /// Gets the array position.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
         protected int getArrayPosition(K key)
         {
             int position = key.GetHashCode() % size;
             return Math.Abs(position);
         }
+        /// <summary>
+        /// Gets the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
         public V get(K key)
         {
             int position = getArrayPosition(key);
@@ -41,7 +59,11 @@ namespace HashTable
             }
             return default(V);
         }
-
+        /// <summary>
+        /// Adds the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
         public void Add(K key, V value)
         {
             int position = getArrayPosition(key);
@@ -53,7 +75,7 @@ namespace HashTable
                 {
                     if (item1.Key.Equals(key))
                     {
-                        Remove(key);
+                        Remove1(key);
                         break;
                     }
                 }
@@ -61,8 +83,11 @@ namespace HashTable
             }
             linkedlist.AddLast(item);
         }
-
-        public void Remove(K key)
+        /// <summary>
+        /// Removes the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        public void Remove1(K key)
         {
             int position = getArrayPosition(key);
             LinkedList<KeyValue<K, V>> linkedlist = GetLinkedList(position);
@@ -82,8 +107,44 @@ namespace HashTable
             }
 
         }
+
+        /// <summary>
+        /// this method removes Specific Word
+        /// </summary>
+        /// <param name="word1"></param>
+        public void removeSpecificWord(K word1)
+        {            
+            int position = getArrayPosition(word1);
+            LinkedList<KeyValue<K, V>> linkedlist1 = GetLinkedList(position);
+            KeyValue<K, V> founditem = default(KeyValue<K, V>);
+           bool itemFound = false;            
+            foreach (var linkedlist in items)
+            {
+                if (linkedlist != null)
+                {
+                    foreach (var element in linkedlist)
+                    {
+                        if (element.Key.Equals(word1))
+                        {
+                            itemFound = true;
+                            founditem = element;
+                           
+                        }
+                        
+                    }
+
+                }
+
+            }
+            if (itemFound)
+            {
+                linkedlist1.Remove(founditem);
+            }
+
+        }
+
         protected LinkedList<KeyValue<K, V>> GetLinkedList(int position)
-        {
+           {
             LinkedList<KeyValue<K, V>> linkedlist = items[position];
             if (linkedlist == null)
             {
